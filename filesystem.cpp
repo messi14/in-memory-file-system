@@ -11,11 +11,6 @@ class Node {
 protected:
   enum class NodeType { FILE, DIRECTORY };
 
-private:
-  std::string m_name;
-  Directory *m_parent;
-  NodeType m_nodeType;
-
 public:
   Node(const std::string &name, Directory *parent, NodeType nodeType)
       : m_name(name), m_parent(parent), m_nodeType(nodeType) {}
@@ -23,6 +18,11 @@ public:
   const std::string &getName() const { return m_name; }
   const NodeType &getNodeType() const { return m_nodeType; }
   Directory *getParent() { return m_parent; }
+
+private:
+  std::string m_name;
+  Directory *m_parent;
+  NodeType m_nodeType;
 };
 
 class File : public Node {
@@ -32,7 +32,6 @@ public:
 };
 
 class Directory : public Node {
-
 public:
   Directory(const std::string &name, Directory *parent)
       : Node(name, parent, NodeType::DIRECTORY) {}
@@ -94,10 +93,6 @@ private:
 };
 
 class FileSystem {
-private:
-  Directory *root;
-  Directory *current;
-
 public:
   FileSystem() {
     root = new Directory("/", nullptr);
@@ -127,11 +122,13 @@ public:
   std::string printWorkingDirectory() {
     return current->printWorkingDirectory();
   }
+
+private:
+  Directory *root;
+  Directory *current;
 };
 
 int main(int argc, const char *argv[]) {
-  // insert code here...
-  std::cout << "Hello, World!\n";
   FileSystem *fs = new FileSystem();
 
   std::cout << fs->printWorkingDirectory() << std::endl;
